@@ -1,6 +1,7 @@
 package org.yearup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.data.CategoryDao;
 import org.yearup.data.ProductDao;
@@ -15,7 +16,7 @@ import java.util.List;
 // add annotation to allow cross site origin requests
 @RestController
 @RequestMapping("/categories")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:8080/categories")
 public class CategoriesController
 {
     private CategoryDao categoryDao;
@@ -58,7 +59,7 @@ public CategoriesController (CategoryDao categoryDao, ProductDao productDao){
     // add annotation to call this method for a POST action
     // add annotation to ensure that only an ADMIN can call this function
     @PostMapping
-    @CrossOrigin(origins = "ADMIN")//ADMIN set as restriction for accessing this method
+    @PreAuthorize("hasRole('ROLE_ADMIN')")//ADMIN set as restriction for accessing this method
     public Category addCategory(@RequestBody Category category)
     {
         // insert the category
@@ -69,7 +70,7 @@ public CategoriesController (CategoryDao categoryDao, ProductDao productDao){
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
     @PutMapping("{id}")
-    @CrossOrigin(origins = "ADMIN")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
     {
         // update the category by id
@@ -80,7 +81,7 @@ public CategoriesController (CategoryDao categoryDao, ProductDao productDao){
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
     @DeleteMapping({"id"})
-    @CrossOrigin(origins = "ADMIN")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteCategory(@PathVariable int id)
     {
         // delete the category by id
