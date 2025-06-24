@@ -28,8 +28,8 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public List<Category> getAllCategories() {
         // get all categories
-        //TODO: CONFIRMED -> CURRENT ERROR DUE TO RECURSIVE CALLING OF METHOD
 //        System.out.println("THIS IS BEING CALLED RECURSIVELY!!!");
+//      This now works!
         List<Category> categories = new ArrayList<>();
         String sql = "SELECT * FROM categories";
 
@@ -48,18 +48,44 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
     @Override
-    public Category getById(int categoryId)
-    {
+    public Category getById(int categoryId) {
         // get category by id
-        return getById(categoryId);
+//        System.out.println("THIS IS BEING CALLED RECURSIVELY!!!");
+        String sql = "SELECT * FROM categories WHERE category_id = ?";
+
+        try {
+            Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while(resultSet.next()){
+                Category category = mapRow(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
+
 
     @Override
     public Category create(Category category)
     {
         // create a new category
-        return create(category);
+        String sql = "SELECT * FROM categories WHERE category_id = ?";
+
+        try {
+            Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while(resultSet.next()){
+                Category category1 = mapRow(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
+
 
     @Override
     public Category insert(Category category) {
@@ -74,13 +100,19 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         update(categoryId, category);
     }
 
-    //TODO: IntelliJ states that this method is recursive and runs indefinitely. Make sure the delete method only deletes what you want not more.
+
+
+
+    //TODO: Fix connection
     @Override
-    public void delete(int categoryId)
-    {
+    public void delete(int categoryId) {
         // delete category
-        delete(categoryId);
+        String sql = "DELETE FROM Categories WHERE category_id = ?";
+
     }
+
+
+
 
     private Category mapRow(ResultSet row) throws SQLException
     {
