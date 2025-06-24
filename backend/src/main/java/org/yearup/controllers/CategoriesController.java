@@ -34,14 +34,15 @@ public CategoriesController (CategoryDao categoryDao, ProductDao productDao){
     public List<Category> getAll()
     {
         // find and return all categories
-        return null;
+        return categoryDao.getAllCategories();
     }
 
     // add the appropriate annotation for a get action
+    @GetMapping("{id}")
     public Category getById(@PathVariable int id)
     {
         // get the category by id
-        return null;
+        return categoryDao.getById(id);
     }
 
     // the url to return all products in category 1 would look like this
@@ -50,29 +51,39 @@ public CategoriesController (CategoryDao categoryDao, ProductDao productDao){
     public List<Product> getProductsById(@PathVariable int categoryId)
     {
         // get a list of product by categoryId
-        return null;
+        //TODO: Double check that the method is correct for return
+        return productDao.listByCategoryId(categoryId);
     }
 
     // add annotation to call this method for a POST action
     // add annotation to ensure that only an ADMIN can call this function
+    @PostMapping
+    @CrossOrigin(origins = "ADMIN")//ADMIN set as restriction for accessing this method
     public Category addCategory(@RequestBody Category category)
     {
         // insert the category
-        return null;
+        //Added "insert" in CategoryDao
+        return categoryDao.insert(category);
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
+    @PutMapping("{id}")
+    @CrossOrigin(origins = "ADMIN")
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
     {
         // update the category by id
+        categoryDao.update(id, category);
     }
 
 
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
+    @DeleteMapping({"id"})
+    @CrossOrigin(origins = "ADMIN")
     public void deleteCategory(@PathVariable int id)
     {
         // delete the category by id
+        categoryDao.delete(id);
     }
 }
