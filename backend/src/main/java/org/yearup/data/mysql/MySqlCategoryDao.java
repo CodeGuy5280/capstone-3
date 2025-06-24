@@ -23,7 +23,10 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public List<Category> getAllCategories()
     {
         // get all categories
+        //TODO: CONFIRMED -> CURRENT ERROR DUE TO RECURSIVE CALLING OF METHOD
+//        System.out.println("THIS IS BEING CALLED RECURSIVELY!!!");
         return getAllCategories();
+
     }
 
     @Override
