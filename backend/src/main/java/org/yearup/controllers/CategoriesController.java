@@ -30,9 +30,9 @@ public CategoriesController (CategoryDao categoryDao, ProductDao productDao){
 }
 
     // add the appropriate annotation for a get action
+    //Added Exception handling
     @GetMapping
-    public List<Category> getAll()
-    {
+    public List<Category> getAll() throws Exception {
         // find and return all categories
         return categoryDao.getAllCategories();
     }
