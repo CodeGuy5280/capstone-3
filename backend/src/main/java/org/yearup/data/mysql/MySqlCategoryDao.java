@@ -30,14 +30,14 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public Category getById(int categoryId)
     {
         // get category by id
-        return null;
+        return getById(categoryId);
     }
 
     @Override
     public Category create(Category category)
     {
         // create a new category
-        return null;
+        return create(category);
     }
 
     @Override
@@ -49,6 +49,8 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public void update(int categoryId, Category category)
     {
         // update category
+        //TODO: Double check that this is the correct way to update.
+        update(categoryId, category);
     }
 
     //TODO: IntelliJ states that this method is recursive and runs indefinitely. Make sure the delete method only deletes what you want not more.
