@@ -17,11 +17,13 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         super(dataSource);
     }
 
+
+    //TODO: IntelliJ states that this method is recursive and runs indefinitely. Make sure the getAllCategories method only gets what you want not more.
     @Override
     public List<Category> getAllCategories()
     {
         // get all categories
-        return null;
+        return getAllCategories();
     }
 
     @Override
@@ -39,15 +41,22 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
     @Override
+    public Category insert(Category category) {
+        return null;
+    }
+
+    @Override
     public void update(int categoryId, Category category)
     {
         // update category
     }
 
+    //TODO: IntelliJ states that this method is recursive and runs indefinitely. Make sure the delete method only deletes what you want not more.
     @Override
     public void delete(int categoryId)
     {
         // delete category
+        delete(categoryId);
     }
 
     private Category mapRow(ResultSet row) throws SQLException

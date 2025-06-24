@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CategoryDao
 {
-    List<Category> getAllCategories();
+    List<Category> getAllCategories() throws Exception;
     Category getById(int categoryId);
     Category create(Category category);
     Category insert(Category category);
