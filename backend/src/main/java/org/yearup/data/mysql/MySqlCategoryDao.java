@@ -5,10 +5,7 @@ import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
         try {
             Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement();
+            PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()){
                 Category category = mapRow(resultSet);
@@ -47,6 +44,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         return categories;
     }
 
+    //TODO: Look into changing try catch clauses
     @Override
     public Category getById(int categoryId) {
         // get category by id
@@ -55,10 +53,10 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
         try {
             Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement();
+            PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery(sql);
-            while(resultSet.next()){
-                Category category = mapRow(resultSet);
+            if(resultSet.next()){
+                return mapRow(resultSet);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -71,11 +69,11 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public Category create(Category category)
     {
         // create a new category
-        String sql = "SELECT * FROM categories WHERE category_id = ?";
+        String sql = "INSERT INTO categories (name, description) VALUES (?, ?)";
 
         try {
             Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement();
+            PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()){
                 Category category1 = mapRow(resultSet);
@@ -88,13 +86,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
 
     @Override
-    public Category insert(Category category) {
-        return null;
-    }
-
-    @Override
-    public void update(int categoryId, Category category)
-    {
+    public void update(int categoryId, Category category){
         // update category
         //TODO: Double check that this is the correct way to update.
         update(categoryId, category);
