@@ -5,28 +5,46 @@ import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 {
+    private final DataSource dataSource;
+
     public MySqlCategoryDao(DataSource dataSource)
     {
         super(dataSource);
+        this.dataSource = dataSource;
     }
 
 
     //TODO: IntelliJ states that this method is recursive and runs indefinitely. Make sure the getAllCategories method only gets what you want not more.
     @Override
-    public List<Category> getAllCategories()
-    {
+    public List<Category> getAllCategories() {
         // get all categories
         //TODO: CONFIRMED -> CURRENT ERROR DUE TO RECURSIVE CALLING OF METHOD
 //        System.out.println("THIS IS BEING CALLED RECURSIVELY!!!");
-        return getAllCategories();
+        List<Category> categories = new ArrayList<>();
+        String sql = "SELECT * FROM categories";
 
+        try {
+            Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while(resultSet.next()){
+                Category category = mapRow(resultSet);
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return categories;
     }
 
     @Override
