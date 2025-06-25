@@ -50,7 +50,6 @@ public class CategoriesController {
     @GetMapping("{categoryId}/products")
     public List<Product> getProductsById(@PathVariable int categoryId) {
         // get a list of product by categoryId
-        //TODO: Double check that the method is correct for return
         return productDao.listByCategoryId(categoryId);
     }
 

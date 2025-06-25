@@ -19,12 +19,11 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     }
 
 
-    //TODO: IntelliJ states that this method is recursive and runs indefinitely. Make sure the getAllCategories method only gets what you want not more.
     @Override
     public List<Category> getAllCategories() {
         // get all categories
 //        System.out.println("THIS IS BEING CALLED RECURSIVELY!!!");
-//      This now works!
+//      This works now!
         List<Category> categories = new ArrayList<>();
         String sql = "SELECT * FROM categories";
 
