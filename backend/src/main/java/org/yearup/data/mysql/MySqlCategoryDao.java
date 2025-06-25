@@ -74,7 +74,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeUpdate();
             while(resultSet.next()){
                 Category category1 = mapRow(resultSet);
             }
@@ -98,9 +98,9 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setString(1, category.getName());
-            statement.setString(2, category.getDescription());
-            statement.setInt(3, category.getCategoryId());
+            statement.setInt(1, category.getCategoryId());
+            statement.setString(2, category.getName());
+            statement.setString(3, category.getDescription());
 
             statement.executeUpdate();
 
