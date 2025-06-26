@@ -8,6 +8,7 @@ import org.yearup.data.ProductDao;
 import org.yearup.data.ShoppingCartDao;
 import org.yearup.data.UserDao;
 import org.yearup.models.ShoppingCart;
+import org.yearup.models.ShoppingCartItem;
 import org.yearup.models.User;
 
 import java.security.Principal;
@@ -67,14 +68,15 @@ public class ShoppingCartController//TODO: Use Constructor injection?: (Shopping
     //TODO: FIX
     @PutMapping("/products/{productId}")
     @PreAuthorize("isAuthenticated()")
-    public void ShoppingCartItem(int quantity, Principal principal){
+    public void UpdateCartItem(@PathVariable int productId, @RequestBody ShoppingCartItem item, Principal principal){
         try{
             //TODO: Need to find out how to update cart
-            String cartItem = principal.getName();
-            shoppingCartDao.;
+            String userName = principal.getName();
+            User user = userDao.getByUserName(userName);
+            int userId = user.getId();
 
-
-
+            int quantity = item.getQuantity();
+            shoppingCartDao.updateCartItems(userId,productId,quantity);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
