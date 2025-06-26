@@ -64,11 +64,12 @@ public class ShoppingCartController//TODO: Use Constructor injection?: (Shopping
     // add a PUT method to update an existing product in the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
+    //TODO: FIX
     @PutMapping("/products/{productId}")
     @PreAuthorize("isAuthenticated()")
     public void ShoppingCartItem(int quantity, Principal principal){
         try{
-            String cartItem = principal.
+            String cartItem = principal.getName();
             this.quantity = quantity;
         }
     }
@@ -79,15 +80,13 @@ public class ShoppingCartController//TODO: Use Constructor injection?: (Shopping
     @DeleteMapping("/cart")
     @PreAuthorize("isAuthenticated()")
     public void deleteCart(Principal principal){
-        String userName = principal.getName();
-
-        ShoppingCartDao.
-        // @DeleteMapping({"id"})
-        //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-        //    public void deleteCategory(@PathVariable int id) {
-        //        // delete the category by id
-        //        categoryDao.delete(id);
-        //    }
-        //}
+        try {
+            String userName = principal.getName();
+            User user = userDao.getByUserName(userName);
+            //needed the injected field not the class ShoppingCartDao
+            shoppingCartDao.deleteCart(user.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

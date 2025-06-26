@@ -8,5 +8,5 @@ public interface ShoppingCartDao {
 
     void addProduct(int userId, int productId);
 
-    void deleteCart();
+    void deleteCart(int userId);
 }
