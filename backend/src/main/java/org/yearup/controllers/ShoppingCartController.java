@@ -69,8 +69,14 @@ public class ShoppingCartController//TODO: Use Constructor injection?: (Shopping
     @PreAuthorize("isAuthenticated()")
     public void ShoppingCartItem(int quantity, Principal principal){
         try{
+            //TODO: Need to find out how to update cart
             String cartItem = principal.getName();
-            this.quantity = quantity;
+            shoppingCartDao.;
+
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
