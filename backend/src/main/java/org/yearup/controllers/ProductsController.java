@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/products")
 @CrossOrigin
 public class ProductsController {
     private ProductDao productDao;
@@ -22,7 +22,7 @@ public class ProductsController {
         this.productDao = productDao;
     }
 
-    @GetMapping("products")
+    @GetMapping()
     @PreAuthorize("permitAll()")
     public List<Product> search(@RequestParam(name = "cat", required = false) Integer categoryId,
                                 @RequestParam(name = "minPrice", required = false) BigDecimal minPrice,
@@ -36,7 +36,7 @@ public class ProductsController {
         }
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("permitAll()")
     public Product getById(@PathVariable int id) {
         try {
@@ -51,7 +51,7 @@ public class ProductsController {
         }
     }
 
-    @PostMapping()
+    @PostMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Product addProduct(@RequestBody Product product) {
         try {
@@ -65,7 +65,7 @@ public class ProductsController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateProduct(@PathVariable int id, @RequestBody Product product) {
         try {
-            productDao.create(product);
+            productDao.update(id, product);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
