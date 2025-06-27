@@ -79,7 +79,7 @@ public class ShoppingCartController
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart
-    @DeleteMapping //TODO: keep path or not?
+    @DeleteMapping ("{id}")
     public void deleteCart(Principal principal){
         try {
             String userName = principal.getName();
